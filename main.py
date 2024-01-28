@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import FastAPI, Depends, HTTPException, Response, status
 from database import  engine, SessionLocal
 import models
@@ -14,9 +15,6 @@ def get_db():
         yield db
     finally:
         db.close()
-
-# def create_calculation_table():
-#     models.Base.metadata.create_all(bind=engine)
 
 class CalculationBase(BaseModel):
     expression: str
@@ -42,3 +40,8 @@ async def create_calculation(expression: str, db: Session = Depends(get_db)):
     db.commit()
     
     return {"expression": expression, "result": result}
+
+@app.get('/calculations/', response_model=List[CalculationBase])
+def get_all_calculations(db: Session = Depends(get_db)):
+    calculations = db.query(models.Calculation).all()
+    return [{"expression": calc.expression, "result": calc.result} for calc in calculations]
