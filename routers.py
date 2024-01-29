@@ -36,7 +36,7 @@ def home():
 
 @router.post('/calculations/{expression}', status_code=status.HTTP_201_CREATED)
 async def create_calculation(expression: str, db: Session = Depends(get_db)):
-    result = calculate_npi(expression)
+    result = str(calculate_npi(expression))
 
     db_calculation = models.Calculation(expression=expression, result=result)
     db.add(db_calculation)

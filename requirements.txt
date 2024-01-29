@@ -4,3 +4,6 @@ starlette==0.14.2
 sqlalchemy==1.4.27
 pymysql==1.0.2 
 cryptography==3.4.8
+httpx==0.20.0
+pytest==7.4.3
+requests==2.26.0
